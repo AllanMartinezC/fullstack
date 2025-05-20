@@ -1,66 +1,46 @@
 package com.example.bilbioteca.duoc.BDD.controller;
 
 import com.example.bilbioteca.duoc.BDD.model.Producto;
-import com.example.bilbioteca.duoc.BDD.services.ProductoService;
+import com.example.bilbioteca.duoc.BDD.services.ProductoServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/productos")
+@RequestMapping("/producto")
+
 public class ProductoController {
 
     @Autowired
-    private ProductoService productoService;
+    private ProductoServices productoService;
 
     @GetMapping
-    public ResponseEntity<List<Producto>> listarProductos() {
-        List<Producto> productos = productoService.getProductos();
-        if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(productos);
+    public List<Producto> obtenerTodos() {
+        return productoService.getProductos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Producto> obtenerProducto(@PathVariable int id) {
-        Producto producto = productoService.getProductoById(id);
-        if (producto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(producto);
+    public Producto obtenerPorId(@PathVariable Long id) {
+        return productoService.getProductoById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Producto> agregarProducto(@RequestBody Producto producto) {
-        Producto creado = productoService.saveProducto(producto);
-        return ResponseEntity.ok(creado);
+    public Producto crear(@RequestBody Producto producto) {
+        return productoService.saveProducto(producto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> actualizarProducto(@PathVariable int id, @RequestBody Producto nuevoProducto) {
-        Producto actualizado = productoService.actualizarProducto(id, nuevoProducto);
-        if (actualizado == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(actualizado);
+    public Producto actualizar(@PathVariable Long id, @RequestBody Producto nuevoProducto) {
+        return productoService.actualizarProducto(id, nuevoProducto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable int id) {
+    public void eliminar(@PathVariable Long id) {
         productoService.deleteProducto(id);
-        return ResponseEntity.noContent().build();
     }
 
-    // Ajustar stock
-    @PutMapping("/{id}/ajustar-stock")
-    public ResponseEntity<Producto> ajustarStock(@PathVariable int id, @RequestParam int cantidad) {
-        Producto producto = productoService.ajustarStock(id, cantidad);
-        if (producto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(producto);
+    @PutMapping("/{id}/stock")
+    public Producto ajustarStock(@PathVariable Long id, @RequestParam Long cantidad) {
+        return productoService.ajustarStock(id, cantidad);
     }
 }
