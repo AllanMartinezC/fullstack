@@ -1,55 +1,50 @@
 package com.example.bilbioteca.duoc.BDD.services;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.bilbioteca.duoc.BDD.model.Producto;
 import com.example.bilbioteca.duoc.BDD.repository.ProductoRepositoryJPA;
 
 @Service
-public class ProductoService {
+public class ProductoServices {
 
     @Autowired
-    private ProductoRepositoryJPA productoRepository;
+    private ProductoRepositoryJPA productoRepositoryJPA;
 
     public List<Producto> getProductos() {
-        return productoRepository.findAll();
+        return productoRepositoryJPA.findAll();
     }
 
-    public Producto getProductoById(int id) {
-        return productoRepository.findById(id).orElse(null);
+    public Producto getProductoById(Long id) {
+        return productoRepositoryJPA.findById(id).orElse(null);
     }
 
     public Producto saveProducto(Producto producto) {
-        return productoRepository.save(producto);
+        return productoRepositoryJPA.save(producto);
     }
 
-    public void deleteProducto(int id) {
-        productoRepository.deleteById(id);
+    public void deleteProducto(Long id) {
+        productoRepositoryJPA.deleteById(id);
     }
 
-    public Producto actualizarProducto(int id, Producto nuevoProducto) {
-        Optional<Producto> optProducto = productoRepository.findById(id);
-        if (optProducto.isPresent()) {
-            Producto existente = optProducto.get();
-            existente.setNombre(nuevoProducto.getNombre());
-            existente.setPrecio(nuevoProducto.getPrecio());
-            existente.setStock(nuevoProducto.getStock());
-            return productoRepository.save(existente);
+    public Producto actualizarProducto(Long id, Producto nuevo_Producto) {
+        Producto producto_Actual = productoRepositoryJPA.findById(id).orElse(null);
+        if (producto_Actual == null) {
+            return null;
         }
-        return null;
+        producto_Actual.setNombre(nuevo_Producto.getNombre());
+        producto_Actual.setPrecio(nuevo_Producto.getPrecio());
+        producto_Actual.setStock(nuevo_Producto.getStock());
+        return productoRepositoryJPA.save(producto_Actual);
     }
 
-    public Producto ajustarStock(int id, int cantidad) {
-        Optional<Producto> optProducto = productoRepository.findById(id);
-        if (optProducto.isPresent()) {
-            Producto producto = optProducto.get();
-            producto.setStock(producto.getStock() + cantidad);
-            return productoRepository.save(producto);
+    public Producto ajustarStock(Long id, Long cantidad) {
+        Producto producto = productoRepositoryJPA.findById(id).orElse(null);
+        if (producto == null) {
+            return null;
         }
-        return null;
+        producto.setStock(producto.getStock() + cantidad);
+        return productoRepositoryJPA.save(producto);
     }
 }
