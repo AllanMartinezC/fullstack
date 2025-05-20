@@ -1,59 +1,40 @@
-package com.perfulandia.admin.controller;
+package com.example.bilbioteca.duoc.BDD.controller;
 
-import com.perfulandia.admin.model.Usuario;
-import com.perfulandia.admin.repository.UsuarioRepository;
+import com.example.bilbioteca.duoc.BDD.model.Rol;
+import com.example.bilbioteca.duoc.BDD.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-/**
- * Controlador para gestionar usuarios del sistema.
- */
 @RestController
-@RequestMapping("/usuarios")
-public class UsuarioController {
+@RequestMapping("/roles")
+
+public class RolController {
 
     @Autowired
-    private UsuarioRepository repositorioUsuario;
-
-    /**
-     * Retorna todos los usuarios registrados.
-     */
+    private RolRepository repositorioRol;
     @GetMapping
-    public List<Usuario> obtenerUsuarios() {
-        return repositorioUsuario.findAll();
+    public List<Rol> obtenerRoles() {
+        return repositorioRol.findAll();
     }
 
-    /**
-     * Busca un usuario por su ID.
-     */
     @GetMapping("/{id}")
-    public Usuario buscarPorId(@PathVariable Long id) {
-        return repositorioUsuario.findById(id).orElse(null);
+    public Rol buscarPorId(@PathVariable Long id) {
+        return repositorioRol.findById(id).orElse(null);
     }
 
-    /**
-     * Crea un nuevo usuario.
-     */
     @PostMapping
-    public Usuario guardar(@RequestBody Usuario usuario) {
-        return repositorioUsuario.save(usuario);
+    public Rol guardar(@RequestBody Rol rol) {
+        return repositorioRol.save(rol);
     }
 
-    /**
-     * Actualiza los datos de un usuario existente.
-     */
     @PutMapping
-    public Usuario actualizar(@RequestBody Usuario usuario) {
-        return repositorioUsuario.save(usuario);
+    public Rol actualizar(@RequestBody Rol rol) {
+        return repositorioRol.save(rol);
     }
 
-    /**
-     * Elimina un usuario por su ID.
-     */
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
-        repositorioUsuario.deleteById(id);
+        repositorioRol.deleteById(id);
     }
 }
