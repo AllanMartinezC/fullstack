@@ -1,42 +1,51 @@
-package com.perfulandia.admin.model;
+package com.example.bilbioteca.duoc.BDD.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+
+
 @Entity
-@Table(name = "usuario")
-@Data // Lombok: genera getters, setters, toString, equals, hashCode
-@AllArgsConstructor // Lombok: constructor con todos los atributos
-@NoArgsConstructor  // Lombok: constructor vacío necesario para JPA
+@Table(name = "usuarios")
+@Data 
+@AllArgsConstructor 
+@NoArgsConstructor  
 public class Usuario {
 
-    // ID único del usuario (clave primaria autogenerada)
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_usuario;
 
-    // Nombre de usuario (debe ser único y no nulo)
-    @Column(nullable = false, unique = true)
-    private String username;
+    
+    @Column(name="nombreUsuario")
+    private String nombreUsuario;
 
-    // Contraseña del usuario (no puede ser nula)
-    @Column(nullable = false)
-    private String password;
+    
+    @Column(name="contrasena")
+    private String contrasena;
 
-    // Correo electrónico del usuario (único y no nulo)
-    @Column(nullable = false, unique = true)
+    
+    @Column(name="email")
     private String email;
 
-    // Estado del usuario (true = activo, false = desactivado)
+    
     @Column(nullable = false)
     private boolean activo = true;
 
-    // Relación muchos-a-uno con la tabla 'rol' (rol asignado al usuario)
+    
     @ManyToOne
-    @JoinColumn(name = "rol_id") // Nombre de la columna FK en la tabla usuario
+    @JoinColumn(name = "rol_id") 
     private Rol rol;
 }
 
