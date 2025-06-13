@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Clientes", description = "Operaciones CRUD para Cliente")
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
@@ -14,21 +15,27 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+
+    @Operation(summary = "Obtener todas los Clientes")
     @GetMapping
     public List<Cliente> obtenerTodos() {
         return clienteService.obtenerTodosLosClientes();
     }
 
+    @Operation(summary = "Obtener Cliente por ID")
     @GetMapping("/{id}")
     public Cliente obtenerPorId(@PathVariable Long id) {
         return clienteService.obtenerClientePorId(id).orElse(null);
     }
 
+    @Operation(summary = "Crear un nuevo Client")
     @PostMapping
     public Cliente crear(@RequestBody Cliente cliente) {
         return clienteService.guardarCliente(cliente);
     }
 
+
+    @Operation(summary = "Actualizar un Cliente por ID")
     @PutMapping("/{id}")
     public Cliente actualizar(@PathVariable Long id, @RequestBody Cliente datos) {
         return clienteService.obtenerClientePorId(id).map(cliente -> {
@@ -42,6 +49,7 @@ public class ClienteController {
         }).orElse(null);
     }
 
+    @Operation(summary = "Eliminar un Cliente por ID")
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         clienteService.eliminarCliente(id);
