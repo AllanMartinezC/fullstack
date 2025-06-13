@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Item Venta", description = "Operaciones CRUD para Item Venta")
 @RestController
 @RequestMapping("/itemventa")
 public class ItemVentaController {
@@ -15,18 +16,21 @@ public class ItemVentaController {
     @Autowired
     private ItemVentaService itemVentaService;
 
+    @Operation(summary = "Crear un nuevo Item Venta")
     @PostMapping
     public ResponseEntity<ItemVenta> crearItem(@RequestBody ItemVenta itemVenta) {
         ItemVenta nuevoItem = itemVentaService.guardarItem(itemVenta);
         return ResponseEntity.ok(nuevoItem);
     }
 
+    @Operation(summary = "Obtene todos los Item venta")
     @GetMapping
     public ResponseEntity<List<ItemVenta>> obtenerTodosLosItems() {
         List<ItemVenta> items = itemVentaService.obtenerTodos();
         return ResponseEntity.ok(items);
     }
 
+    @Operation(summary = "Eliminar Item Venta por ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarItem(@PathVariable Long id) {
     itemVentaService.eliminarItem(id);
